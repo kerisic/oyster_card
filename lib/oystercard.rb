@@ -13,4 +13,7 @@ attr_reader :balance
     fail "Your balance cannot be over £#{MAXBALANCE}" if @balance > MAXBALANCE
   end
 
+  def deduct(money_spent)
+    @balance -= money_spent
+  end
 end
