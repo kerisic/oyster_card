@@ -15,20 +15,23 @@ class OysterCard # rubocop:todo Style/Documentation
     raise "Your balance cannot be over £#{MAXBALANCE}" if @balance > MAXBALANCE
   end
 
-  def deduct(money_spent)
-    @balance -= money_spent
-  end
-
   def in_journey?
     @in_use
   end
 
   def touch_in
     raise "Insufficient funds. Minimum of #{MINFARE} required." if @balance < MINFARE
-    @in_use = true 
+    @in_use = true
   end
 
   def touch_out
+    @balance -= 1
     @in_use = false
   end
+
+  private
+  def deduct(money_spent)
+    @balance -= money_spent
+  end
+  
 end

@@ -19,9 +19,10 @@ describe OysterCard do
   end
 
   describe "#deduct" do
-    it 'deducts money from balance when u spend money' do
-      subject.top_up(50)
-      expect { subject.deduct(30) }.to change { subject.balance }.by -30
+    it 'deducts money from balance when a journey is made' do
+      subject.top_up(20)
+      subject.touch_in
+      expect { subject.touch_out }.to change { subject.balance }.by -1
     end
   end
 
