@@ -3,11 +3,11 @@ class OysterCard # rubocop:todo Style/Documentation
   MAXBALANCE = 90
   MINFARE = 1
 
-  attr_reader :balance
+  attr_reader :balance, :entry_station
 
   def initialize(balance = DEFAULTBALANCE)
     @balance = balance
-    @in_use = false
+    @entry_station = nil
   end
 
   def top_up(top_up_value)
@@ -16,17 +16,17 @@ class OysterCard # rubocop:todo Style/Documentation
   end
 
   def in_journey?
-    @in_use
+    @entry_station != nil
   end
 
-  def touch_in
+  def touch_in(station)
     raise "Insufficient funds. Minimum of #{MINFARE} required." if @balance < MINFARE
-    @in_use = true
+    @entry_station = station
   end
 
   def touch_out
     @balance -= 1
-    @in_use = false
+    @entry_station = nil
   end
 
   private
