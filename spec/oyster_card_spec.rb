@@ -61,22 +61,21 @@ describe OysterCard do
   end
 
   describe "save user's destination when they travel" do
-    it 'returns entry station upon touching-in' do
+    before(:each) do
       subject.top_up(1)
       subject.touch_in(station)
+    end
+
+    it 'returns entry station upon touching-in' do
       expect(subject.entry_station).to eq station
     end
 
     it 'forgets entry station when user touches out' do
-      subject.top_up(1)
-      subject.touch_in(station)
       subject.touch_out(station2)
       expect(subject.entry_station).to eq nil
     end
 
     it 'returns exit station upon touching-out' do
-      subject.top_up(1)
-      subject.touch_in(station)
       subject.touch_out(station2)
       expect(subject.exit_station).to eq station2
     end
@@ -86,8 +85,6 @@ describe OysterCard do
     end
 
     it 'creates one journey after user touches in and out' do
-      subject.top_up(1)
-      subject.touch_in(station)
       subject.touch_out(station2)
       expect(subject.journeys).to eq [{entry_station: station, exit_station: station2}]
     end
