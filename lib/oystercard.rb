@@ -1,6 +1,7 @@
 class OysterCard # rubocop:todo Style/Documentation
   DEFAULTBALANCE = 0
   MAXBALANCE = 90
+  MINFARE = 1
 
   attr_reader :balance
 
@@ -23,7 +24,8 @@ class OysterCard # rubocop:todo Style/Documentation
   end
 
   def touch_in
-    @in_use = true
+    raise "Insufficient funds. Minimum of #{MINFARE} required." if @balance < MINFARE
+    @in_use = true 
   end
 
   def touch_out
