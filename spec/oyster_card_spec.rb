@@ -24,4 +24,25 @@ describe OysterCard do
       expect { subject.deduct(30) }.to change { subject.balance }.by -30
     end
   end
+
+  describe "#in_journey?" do
+    it 'returns true if still in journey' do
+      subject.touch_in
+      expect(subject.in_journey?).to eq(true)
+    end
+  end
+
+  describe "#touch_in" do
+    it 'returns true if user touched in at start of journey' do
+      expect(subject.touch_in).to eq(true)
+    end
+  end
+
+  context "if card is in use" do
+    it 'returns true for in_journey?' do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey?).to eq(false)
+    end
+  end
 end

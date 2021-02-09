@@ -6,6 +6,7 @@ class OysterCard # rubocop:todo Style/Documentation
 
   def initialize(balance = DEFAULTBALANCE)
     @balance = balance
+    @in_use = false
   end
 
   def top_up(top_up_value)
@@ -15,5 +16,17 @@ class OysterCard # rubocop:todo Style/Documentation
 
   def deduct(money_spent)
     @balance -= money_spent
+  end
+
+  def in_journey?
+    @in_use
+  end
+
+  def touch_in
+    @in_use = true
+  end
+
+  def touch_out
+    @in_use = false
   end
 end
