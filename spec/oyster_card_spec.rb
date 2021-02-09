@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe OysterCard do
   let(:station){ double :station }
+  let(:station2 ){ double :station2 }
   it 'has a default balance of 0 when initialized' do
     expect(subject.balance).to eq(0)
   end
@@ -20,11 +21,11 @@ describe OysterCard do
   end
 
   describe "#deduct" do
-  
+
     it 'deducts money from balance when a journey is made' do
       subject.top_up(20)
       subject.touch_in(station)
-      expect { subject.touch_out }.to change { subject.balance }.by -1
+      expect { subject.touch_out(station2) }.to change { subject.balance }.by -1
     end
   end
 
@@ -47,7 +48,7 @@ describe OysterCard do
     it 'returns true for in_journey?' do
       subject.top_up(1)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station2)
       expect(subject.in_journey?).to eq(false)
     end
   end
@@ -59,20 +60,37 @@ describe OysterCard do
     end
   end
 
-  describe "save user start destination when they touch in" do
-    it 'returns entry station' do
+  describe "save user's destination when they travel" do
+    it 'returns entry station upon touching-in' do
       subject.top_up(1)
       subject.touch_in(station)
       expect(subject.entry_station).to eq station
     end
-  end
 
-  describe "Forget entry station on touch out" do
     it 'forgets entry station when user touches out' do
       subject.top_up(1)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(station2)
       expect(subject.entry_station).to eq nil
     end
+
+    it 'returns exit station upon touching-out' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.exit_station).to eq station2
+    end
+
+    it 'returns an empty list of journeys when no journey has been made' do
+      expect(subject.journeys).to eq []
+    end
+
+    it 'creates one journey after user touches in and out' do
+      subject.top_up(1)
+      subject.touch_in(station)
+      subject.touch_out(station2)
+      expect(subject.journeys).to eq [{entry_station: station, exit_station: station2}]
+    end
   end
+
 end

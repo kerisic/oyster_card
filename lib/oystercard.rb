@@ -3,11 +3,13 @@ class OysterCard # rubocop:todo Style/Documentation
   MAXBALANCE = 90
   MINFARE = 1
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :exit_station, :journeys
 
   def initialize(balance = DEFAULTBALANCE)
     @balance = balance
     @entry_station = nil
+    @exit_station = nil
+    @journeys = []
   end
 
   def top_up(top_up_value)
@@ -24,8 +26,11 @@ class OysterCard # rubocop:todo Style/Documentation
     @entry_station = station
   end
 
-  def touch_out
+  def touch_out(station)
     @balance -= 1
+    @exit_station = station
+    journey = {entry_station: @entry_station, exit_station: @exit_station}
+    @journeys << journey
     @entry_station = nil
   end
 
@@ -33,5 +38,5 @@ class OysterCard # rubocop:todo Style/Documentation
   def deduct(money_spent)
     @balance -= money_spent
   end
-  
+
 end
