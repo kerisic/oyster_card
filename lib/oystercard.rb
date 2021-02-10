@@ -1,4 +1,4 @@
-class OysterCard # rubocop:todo Style/Documentation
+class OysterCard
   DEFAULTBALANCE = 0
   MAXBALANCE = 90
   MINFARE = 1
@@ -23,20 +23,21 @@ class OysterCard # rubocop:todo Style/Documentation
 
   def touch_in(station)
     raise "Insufficient funds. Minimum of #{MINFARE} required." if @balance < MINFARE
+
     @entry_station = station
   end
 
   def touch_out(station)
-    @balance -= 1
+    deduct(MINFARE)
     @exit_station = station
-    journey = {entry_station: @entry_station, exit_station: @exit_station}
+    journey = { entry_station: @entry_station, exit_station: @exit_station }
     @journeys << journey
     @entry_station = nil
   end
 
   private
+
   def deduct(money_spent)
     @balance -= money_spent
   end
-
 end
